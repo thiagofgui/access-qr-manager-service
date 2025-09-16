@@ -1,0 +1,1 @@
+# access-qr-manager-service
