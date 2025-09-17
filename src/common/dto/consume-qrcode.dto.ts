@@ -1,11 +1,14 @@
-import { IsString, IsDateString } from 'class-validator';
+import { IsString, IsDateString, IsNotEmpty, IsUUID } from 'class-validator';
 
 export class ConsumeQrcodeDto {
   @IsString()
+  @IsNotEmpty()
+  @IsUUID()
   jti: string;
 
   @IsString()
-  gateId: string;
+  @IsNotEmpty()
+  gate: string;
 
   @IsDateString()
   at: string;

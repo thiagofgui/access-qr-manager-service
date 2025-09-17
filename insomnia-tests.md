@@ -60,7 +60,7 @@ Content-Type: application/json
 
 {
   "token": "TOKEN_DO_PASSO_ANTERIOR",
-  "gateId": "GATE-A"
+  "gate": "GATE-A"
 }
 ```
 
@@ -83,7 +83,7 @@ Content-Type: application/json
 
 {
   "token": "MESMO_TOKEN_DO_PASSO_ANTERIOR",
-  "gateId": "GATE-A"
+  "gate": "GATE-A"
 }
 ```
 
@@ -107,7 +107,7 @@ Content-Type: application/json
 
 {
   "token": "TOKEN_VALIDO",
-  "gateId": "GATE-C"
+  "gate": "GATE-C"
 }
 ```
 
@@ -146,7 +146,7 @@ Content-Type: application/json
 
 {
   "token": "TOKEN_EXPIRADO",
-  "gateId": "GATE-A"
+  "gate": "GATE-A"
 }
 ```
 
@@ -182,7 +182,7 @@ Content-Type: application/json
 
 {
   "token": "TOKEN_REVOGADO",
-  "gateId": "GATE-A"
+  "gate": "GATE-A"
 }
 ```
 
@@ -221,7 +221,7 @@ Content-Type: application/json
 
 {
   "token": "TOKEN_MULTIPLE_USES",
-  "gateId": "GATE-A"
+  "gate": "GATE-A"
 }
 ```
 
@@ -232,7 +232,7 @@ Content-Type: application/json
 
 {
   "token": "MESMO_TOKEN",
-  "gateId": "GATE-A"
+  "gate": "GATE-A"
 }
 ```
 
@@ -243,7 +243,7 @@ Content-Type: application/json
 
 {
   "token": "MESMO_TOKEN",
-  "gateId": "GATE-A"
+  "gate": "GATE-A"
 }
 ```
 
@@ -254,7 +254,7 @@ Content-Type: application/json
 
 {
   "token": "MESMO_TOKEN",
-  "gateId": "GATE-A"
+  "gate": "GATE-A"
 }
 ```
 
@@ -328,7 +328,7 @@ Content-Type: application/json
 
 {
   "jti": "uuid-do-token",
-  "gateId": "GATE-A",
+  "gate": "GATE-A",
   "at": "2025-09-16T21:30:00Z"
 }
 ```

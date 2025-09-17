@@ -33,9 +33,4 @@ export class ManagerQrcodeController {
   async revokeQrcode(@Param('jti') jti: string) {
     return this.managerQrcodeService.revokeQrcode(jti);
   }
-
-  @Get('keys/public')
-  getPublicKey() {
-    return this.managerQrcodeService.getPublicKey();
-  }
 }

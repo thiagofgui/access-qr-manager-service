@@ -20,8 +20,7 @@ async function bootstrap() {
   const port = process.env.PORT ?? 3000;
   await app.listen(port);
 
-  console.log(`🚀 Serviço rodando na porta ${port}`);
-  console.log(`📱 QR Manager: http://localhost:${port}/qrcodes`);
-  console.log(`🚪 Turnstile: http://localhost:${port}/turnstile`);
+  console.log(`🚀 Access QR Manager Service rodando na porta ${port}`);
+  console.log(`📱 API Endpoints: http://localhost:${port}/qrcodes`);
 }
 bootstrap();

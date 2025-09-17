@@ -125,7 +125,7 @@ curl -X POST http://localhost:3000/turnstile/scan \
   -H "Content-Type: application/json" \
   -d '{
     "token": "TOKEN_AQUI",
-    "gateId": "GATE-A"
+    "gate": "GATE-A"
   }'
 ```
 
@@ -140,7 +140,7 @@ curl -X POST http://localhost:3000/qrcodes/consume \
   -H "Content-Type: application/json" \
   -d '{
     "jti": "JTI_AQUI",
-    "gateId": "GATE-A",
+    "gate": "GATE-A",
     "at": "2025-09-16T21:30:00Z"
   }'
 ```

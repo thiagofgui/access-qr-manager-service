@@ -131,7 +131,7 @@
       "method": "POST",
       "body": {
         "mimeType": "application/json",
-        "text": "{\n  \"jti\": \"{{ _.jti }}\",\n  \"gateId\": \"GATE-A\",\n  \"at\": \"2025-09-16T21:30:00Z\"\n}"
+        "text": "{\n  \"jti\": \"{{ _.jti }}\",\n  \"gate\": \"GATE-A\",\n  \"at\": \"2025-09-16T21:30:00Z\"\n}"
       },
       "parameters": [],
       "headers": [
@@ -185,7 +185,7 @@
       "method": "POST",
       "body": {
         "mimeType": "application/json",
-        "text": "{\n  \"token\": \"{{ _.token }}\",\n  \"gateId\": \"GATE-A\"\n}"
+        "text": "{\n  \"token\": \"{{ _.token }}\",\n  \"gate\": \"GATE-A\"\n}"
       },
       "parameters": [],
       "headers": [
@@ -216,7 +216,7 @@
       "method": "POST",
       "body": {
         "mimeType": "application/json",
-        "text": "{\n  \"token\": \"{{ _.token }}\",\n  \"gateId\": \"GATE-A\"\n}"
+        "text": "{\n  \"token\": \"{{ _.token }}\",\n  \"gate\": \"GATE-A\"\n}"
       },
       "parameters": [],
       "headers": [
@@ -247,7 +247,7 @@
       "method": "POST",
       "body": {
         "mimeType": "application/json",
-        "text": "{\n  \"token\": \"{{ _.token }}\",\n  \"gateId\": \"GATE-C\"\n}"
+        "text": "{\n  \"token\": \"{{ _.token }}\",\n  \"gate\": \"GATE-C\"\n}"
       },
       "parameters": [],
       "headers": [
@@ -278,7 +278,7 @@
       "method": "POST",
       "body": {
         "mimeType": "application/json",
-        "text": "{\n  \"token\": \"{{ _.expired_token }}\",\n  \"gateId\": \"GATE-A\"\n}"
+        "text": "{\n  \"token\": \"{{ _.expired_token }}\",\n  \"gate\": \"GATE-A\"\n}"
       },
       "parameters": [],
       "headers": [
@@ -309,7 +309,7 @@
       "method": "POST",
       "body": {
         "mimeType": "application/json",
-        "text": "{\n  \"token\": \"{{ _.revoked_token }}\",\n  \"gateId\": \"GATE-A\"\n}"
+        "text": "{\n  \"token\": \"{{ _.revoked_token }}\",\n  \"gate\": \"GATE-A\"\n}"
       },
       "parameters": [],
       "headers": [
@@ -340,7 +340,7 @@
       "method": "POST",
       "body": {
         "mimeType": "application/json",
-        "text": "{\n  \"token\": \"{{ _.multiple_token }}\",\n  \"gateId\": \"GATE-A\"\n}"
+        "text": "{\n  \"token\": \"{{ _.multiple_token }}\",\n  \"gate\": \"GATE-A\"\n}"
       },
       "parameters": [],
       "headers": [
@@ -371,7 +371,7 @@
       "method": "POST",
       "body": {
         "mimeType": "application/json",
-        "text": "{\n  \"token\": \"{{ _.multiple_token }}\",\n  \"gateId\": \"GATE-A\"\n}"
+        "text": "{\n  \"token\": \"{{ _.multiple_token }}\",\n  \"gate\": \"GATE-A\"\n}"
       },
       "parameters": [],
       "headers": [
@@ -402,7 +402,7 @@
       "method": "POST",
       "body": {
         "mimeType": "application/json",
-        "text": "{\n  \"token\": \"{{ _.multiple_token }}\",\n  \"gateId\": \"GATE-A\"\n}"
+        "text": "{\n  \"token\": \"{{ _.multiple_token }}\",\n  \"gate\": \"GATE-A\"\n}"
       },
       "parameters": [],
       "headers": [
@@ -433,7 +433,7 @@
       "method": "POST",
       "body": {
         "mimeType": "application/json",
-        "text": "{\n  \"token\": \"{{ _.multiple_token }}\",\n  \"gateId\": \"GATE-A\"\n}"
+        "text": "{\n  \"token\": \"{{ _.multiple_token }}\",\n  \"gate\": \"GATE-A\"\n}"
       },
       "parameters": [],
       "headers": [

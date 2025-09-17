@@ -3,13 +3,14 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ManagerQrcodeController } from './manager-qrcode.controller';
 import { ManagerQrcodeService } from './manager-qrcode.service';
 import { Pass, PassSchema } from '../../common/schemas/pass.schema';
+import { JwtService } from '../../common/services/jwt.service';
 
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: Pass.name, schema: PassSchema }]),
   ],
   controllers: [ManagerQrcodeController],
-  providers: [ManagerQrcodeService],
+  providers: [ManagerQrcodeService, JwtService],
   exports: [ManagerQrcodeService],
 })
 export class ManagerQrcodeModule {}

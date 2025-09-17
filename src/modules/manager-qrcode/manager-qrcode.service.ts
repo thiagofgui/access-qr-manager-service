@@ -14,20 +14,19 @@ import {
 } from '../../common/schemas/pass.schema';
 import { CreateQrcodeDto } from '../../common/dto/create-qrcode.dto';
 import { ConsumeQrcodeDto } from '../../common/dto/consume-qrcode.dto';
-import {
-  generateQrToken,
-  getPublicKey,
-} from '../../common/services/jwt.service';
+import { JwtService } from '../../common/services/jwt.service';
+import { env } from '../../config/env';
 
 @Injectable()
 export class ManagerQrcodeService {
   constructor(
     @InjectModel(Pass.name)
     private passModel: Model<PassDocument>,
+    private jwtService: JwtService,
   ) {}
 
   async createQrcode(createQrcodeDto: CreateQrcodeDto) {
-    const now = new Date();
+    const now = new Date(Date.now() - 3 * 60 * 60 * 1000);
     const windowStart = new Date(createQrcodeDto.windowStart);
     const windowEnd = new Date(createQrcodeDto.windowEnd);
 
@@ -40,7 +39,7 @@ export class ManagerQrcodeService {
     }
 
     // Gerar token JWT
-    const token = generateQrToken({
+    const { token, jti } = this.jwtService.generateToken({
       visitId: createQrcodeDto.visitId,
       visitName: createQrcodeDto.visitName,
       allowedBuilding: createQrcodeDto.allowedBuilding,
@@ -48,12 +47,6 @@ export class ManagerQrcodeService {
       windowEnd: createQrcodeDto.windowEnd,
       maxUses: createQrcodeDto.maxUses,
     });
-
-    // Decodificar token para obter JTI
-    const decoded = JSON.parse(
-      Buffer.from(token.split('.')[1], 'base64').toString(),
-    );
-    const jti = decoded.jti;
 
     // Salvar no banco
     const pass = new this.passModel({
@@ -86,8 +79,13 @@ export class ManagerQrcodeService {
       throw new NotFoundException('Pass not found');
     }
 
-    const now = new Date();
+    const now = new Date(Date.now() - 3 * 60 * 60 * 1000);
     const scanTime = new Date(consumeQrcodeDto.at);
+
+    // Verificar se foi revogado
+    if (pass.status === PassStatus.REVOKED) {
+      throw new GoneException('Pass revoked');
+    }
 
     // Verificar se expirou
     if (now > pass.windowEnd) {
@@ -96,18 +94,13 @@ export class ManagerQrcodeService {
       throw new BadRequestException('Pass expired');
     }
 
-    // Verificar se foi revogado
-    if (pass.status === PassStatus.REVOKED) {
-      throw new GoneException('Pass revoked');
-    }
-
     // Verificar se já foi usado o máximo de vezes
     if (pass.usedCount >= pass.maxUses) {
       throw new ConflictException('Pass already used maximum times');
     }
 
     // Verificar se o gate é permitido
-    if (pass.allowedBuilding !== consumeQrcodeDto.gateId) {
+    if (pass.allowedBuilding !== consumeQrcodeDto.gate) {
       throw new BadRequestException('Gate not allowed for this pass');
     }
 
@@ -140,9 +133,5 @@ export class ManagerQrcodeService {
     await pass.save();
 
     return { ok: true };
-  }
-
-  getPublicKey() {
-    return getPublicKey();
   }
 }
