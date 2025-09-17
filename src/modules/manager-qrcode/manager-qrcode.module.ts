@@ -1,0 +1,15 @@
+import { Module } from '@nestjs/common';
+import { MongooseModule } from '@nestjs/mongoose';
+import { ManagerQrcodeController } from './manager-qrcode.controller';
+import { ManagerQrcodeService } from './manager-qrcode.service';
+import { Pass, PassSchema } from '../../common/schemas/pass.schema';
+
+@Module({
+  imports: [
+    MongooseModule.forFeature([{ name: Pass.name, schema: PassSchema }]),
+  ],
+  controllers: [ManagerQrcodeController],
+  providers: [ManagerQrcodeService],
+  exports: [ManagerQrcodeService],
+})
+export class ManagerQrcodeModule {}

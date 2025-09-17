@@ -1,0 +1,586 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2025-09-16T21:00:00.000Z",
+  "__export_source": "insomnia.desktop.app:v2023.5.8",
+  "resources": [
+    {
+      "_id": "req_get_public_key",
+      "parentId": "fld_qr_manager",
+      "modified": 1694901600000,
+      "created": 1694901600000,
+      "url": "{{ _.base_url }}/qrcodes/keys/public",
+      "name": "1. Obter Chave Pública",
+      "description": "Obtém a chave pública para verificação de JWT",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": -1694901600000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_create_qrcode",
+      "parentId": "fld_qr_manager",
+      "modified": 1694901600000,
+      "created": 1694901600000,
+      "url": "{{ _.base_url }}/qrcodes",
+      "name": "2. Criar QR Code (Normal)",
+      "description": "Cria um QR Code válido para teste",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"visitId\": \"VIS-001\",\n  \"visitName\": \"João Silva\",\n  \"allowedBuilding\": \"GATE-A\",\n  \"windowStart\": \"2025-09-16T21:00:00Z\",\n  \"windowEnd\": \"2025-09-16T23:00:00Z\",\n  \"maxUses\": 1\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1694901590000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_create_qrcode_expired",
+      "parentId": "fld_qr_manager",
+      "modified": 1694901600000,
+      "created": 1694901600000,
+      "url": "{{ _.base_url }}/qrcodes",
+      "name": "3. Criar QR Code (Expirado)",
+      "description": "Cria um QR Code que já expirou",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"visitId\": \"VIS-EXPIRED\",\n  \"visitName\": \"Maria Santos\",\n  \"allowedBuilding\": \"GATE-A\",\n  \"windowStart\": \"2025-09-16T19:00:00Z\",\n  \"windowEnd\": \"2025-09-16T20:00:00Z\",\n  \"maxUses\": 1\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1694901580000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_create_qrcode_multiple",
+      "parentId": "fld_qr_manager",
+      "modified": 1694901600000,
+      "created": 1694901600000,
+      "url": "{{ _.base_url }}/qrcodes",
+      "name": "4. Criar QR Code (Múltiplos Usos)",
+      "description": "Cria um QR Code com múltiplos usos permitidos",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"visitId\": \"VIS-MULTIPLE\",\n  \"visitName\": \"Pedro Costa\",\n  \"allowedBuilding\": \"GATE-A\",\n  \"windowStart\": \"2025-09-16T21:00:00Z\",\n  \"windowEnd\": \"2025-09-16T23:00:00Z\",\n  \"maxUses\": 3\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1694901570000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_consume_qrcode",
+      "parentId": "fld_qr_manager",
+      "modified": 1694901600000,
+      "created": 1694901600000,
+      "url": "{{ _.base_url }}/qrcodes/consume",
+      "name": "5. Consumir QR Code",
+      "description": "Consome um QR Code diretamente (QR Manager)",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"jti\": \"{{ _.jti }}\",\n  \"gateId\": \"GATE-A\",\n  \"at\": \"2025-09-16T21:30:00Z\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1694901560000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_revoke_qrcode",
+      "parentId": "fld_qr_manager",
+      "modified": 1694901600000,
+      "created": 1694901600000,
+      "url": "{{ _.base_url }}/qrcodes/{{ _.jti }}",
+      "name": "6. Revogar QR Code",
+      "description": "Revoga um QR Code pelo JTI",
+      "method": "DELETE",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": -1694901550000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_scan_qrcode_success",
+      "parentId": "fld_turnstile",
+      "modified": 1694901600000,
+      "created": 1694901600000,
+      "url": "{{ _.base_url }}/turnstile/scan",
+      "name": "7. Escanear QR Code (Sucesso)",
+      "description": "Escaneia um QR Code válido",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"token\": \"{{ _.token }}\",\n  \"gateId\": \"GATE-A\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1694901540000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_scan_qrcode_duplicate",
+      "parentId": "fld_turnstile",
+      "modified": 1694901600000,
+      "created": 1694901600000,
+      "url": "{{ _.base_url }}/turnstile/scan",
+      "name": "8. Escanear QR Code (Duplicado)",
+      "description": "Tenta usar o mesmo token duas vezes",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"token\": \"{{ _.token }}\",\n  \"gateId\": \"GATE-A\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1694901530000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_scan_qrcode_wrong_gate",
+      "parentId": "fld_turnstile",
+      "modified": 1694901600000,
+      "created": 1694901600000,
+      "url": "{{ _.base_url }}/turnstile/scan",
+      "name": "9. Escanear QR Code (Gate Errado)",
+      "description": "Tenta usar token em gate não permitido",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"token\": \"{{ _.token }}\",\n  \"gateId\": \"GATE-C\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1694901520000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_scan_qrcode_expired",
+      "parentId": "fld_turnstile",
+      "modified": 1694901600000,
+      "created": 1694901600000,
+      "url": "{{ _.base_url }}/turnstile/scan",
+      "name": "10. Escanear QR Code (Expirado)",
+      "description": "Tenta usar token expirado",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"token\": \"{{ _.expired_token }}\",\n  \"gateId\": \"GATE-A\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1694901510000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_scan_qrcode_revoked",
+      "parentId": "fld_turnstile",
+      "modified": 1694901600000,
+      "created": 1694901600000,
+      "url": "{{ _.base_url }}/turnstile/scan",
+      "name": "11. Escanear QR Code (Revogado)",
+      "description": "Tenta usar token revogado",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"token\": \"{{ _.revoked_token }}\",\n  \"gateId\": \"GATE-A\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1694901500000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_scan_qrcode_multiple_1",
+      "parentId": "fld_turnstile",
+      "modified": 1694901600000,
+      "created": 1694901600000,
+      "url": "{{ _.base_url }}/turnstile/scan",
+      "name": "12. Escanear QR Code (1º Uso)",
+      "description": "Primeiro uso de token com múltiplos usos",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"token\": \"{{ _.multiple_token }}\",\n  \"gateId\": \"GATE-A\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1694901490000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_scan_qrcode_multiple_2",
+      "parentId": "fld_turnstile",
+      "modified": 1694901600000,
+      "created": 1694901600000,
+      "url": "{{ _.base_url }}/turnstile/scan",
+      "name": "13. Escanear QR Code (2º Uso)",
+      "description": "Segundo uso de token com múltiplos usos",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"token\": \"{{ _.multiple_token }}\",\n  \"gateId\": \"GATE-A\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1694901480000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_scan_qrcode_multiple_3",
+      "parentId": "fld_turnstile",
+      "modified": 1694901600000,
+      "created": 1694901600000,
+      "url": "{{ _.base_url }}/turnstile/scan",
+      "name": "14. Escanear QR Code (3º Uso)",
+      "description": "Terceiro uso de token com múltiplos usos",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"token\": \"{{ _.multiple_token }}\",\n  \"gateId\": \"GATE-A\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1694901470000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_scan_qrcode_multiple_4",
+      "parentId": "fld_turnstile",
+      "modified": 1694901600000,
+      "created": 1694901600000,
+      "url": "{{ _.base_url }}/turnstile/scan",
+      "name": "15. Escanear QR Code (4º Uso - Falha)",
+      "description": "Quarto uso de token (deve falhar - limite excedido)",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"token\": \"{{ _.multiple_token }}\",\n  \"gateId\": \"GATE-A\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1694901460000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_flush_events",
+      "parentId": "fld_turnstile",
+      "modified": 1694901600000,
+      "created": 1694901600000,
+      "url": "{{ _.base_url }}/turnstile/flush",
+      "name": "16. Flush Eventos Bufferizados",
+      "description": "Envia eventos bufferizados para compensação",
+      "method": "POST",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": -1694901450000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_create_qrcode_invalid",
+      "parentId": "fld_validation_tests",
+      "modified": 1694901600000,
+      "created": 1694901600000,
+      "url": "{{ _.base_url }}/qrcodes",
+      "name": "17. Criar QR Code (Dados Inválidos)",
+      "description": "Testa validação de dados com campos inválidos",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"visitId\": \"\",\n  \"visitName\": \"Teste\",\n  \"allowedBuilding\": \"\",\n  \"windowStart\": \"2025-09-16T23:00:00Z\",\n  \"windowEnd\": \"2025-09-16T21:00:00Z\",\n  \"maxUses\": 0\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1694901440000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "fld_qr_manager",
+      "parentId": "wrk_qr_manager_tests",
+      "modified": 1694901600000,
+      "created": 1694901600000,
+      "name": "QR Manager",
+      "description": "Endpoints do QR Manager Service",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -1694901600000,
+      "_type": "request_group"
+    },
+    {
+      "_id": "fld_turnstile",
+      "parentId": "wrk_qr_manager_tests",
+      "modified": 1694901600000,
+      "created": 1694901600000,
+      "name": "Turnstile",
+      "description": "Endpoints do Turnstile Service",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -1694901590000,
+      "_type": "request_group"
+    },
+    {
+      "_id": "fld_validation_tests",
+      "parentId": "wrk_qr_manager_tests",
+      "modified": 1694901600000,
+      "created": 1694901600000,
+      "name": "Testes de Validação",
+      "description": "Testes de validação de dados e DTOs",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -1694901580000,
+      "_type": "request_group"
+    },
+    {
+      "_id": "wrk_qr_manager_tests",
+      "parentId": null,
+      "modified": 1694901600000,
+      "created": 1694901600000,
+      "name": "QR Manager Tests",
+      "description": "Coleção de testes para o sistema de QR Manager",
+      "scope": "collection",
+      "_type": "workspace"
+    },
+    {
+      "_id": "env_base",
+      "parentId": "wrk_qr_manager_tests",
+      "modified": 1694901600000,
+      "created": 1694901600000,
+      "name": "Base Environment",
+      "data": {
+        "base_url": "http://localhost:3000",
+        "token": "",
+        "jti": "",
+        "expired_token": "",
+        "revoked_token": "",
+        "multiple_token": ""
+      },
+      "dataPropertyOrder": {
+        "&": [
+          "base_url",
+          "token",
+          "jti",
+          "expired_token",
+          "revoked_token",
+          "multiple_token"
+        ]
+      },
+      "color": null,
+      "isPrivate": false,
+      "metaSortKey": 1694901600000,
+      "_type": "environment"
+    }
+  ]
+}
