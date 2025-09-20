@@ -23,7 +23,7 @@ export class CreateQrcodeDto {
   @IsString()
   @IsNotEmpty()
   @Length(1, 50)
-  allowedBuilding: string;
+  turnstileId: string;
 
   @IsDateString()
   windowStart: string;

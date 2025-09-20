@@ -11,4 +11,5 @@ export const env = {
   MONGODB_DATABASE: process.env.MONGODB_DATABASE || 'qr-manager',
   PORT: process.env.PORT || '3000',
   QR_MANAGER_URL: process.env.QR_MANAGER_URL || 'http://localhost:3000',
+  TURNSTILE_SERVICE_URL: process.env.TURNSTILE_SERVICE_URL || 'http://localhost:3031',
 };

@@ -75,7 +75,7 @@ HwIDAQAB
       const createDto = {
         visitId: 'VIS-123',
         visitName: 'Test Visit',
-        allowedBuilding: 'GATE-A',
+        turnstileId: 'GATE-A', // Campo correto
         windowStart: new Date(Date.now() + 3600000).toISOString(), // 1 hour from now
         windowEnd: new Date(Date.now() + 7200000).toISOString(), // 2 hours from now
         maxUses: 1,
@@ -97,7 +97,7 @@ HwIDAQAB
       const invalidDto = {
         visitId: 'VIS-123',
         visitName: 'Test Visit',
-        allowedBuilding: 'GATE-A',
+        turnstileId: 'GATE-A', // Campo correto
         windowStart: new Date(Date.now() - 4 * 3600000).toISOString(), // 4 hours ago (beyond the 3-hour offset)
         windowEnd: new Date(Date.now() + 3600000).toISOString(),
         maxUses: 1,
@@ -128,7 +128,7 @@ HwIDAQAB
       const createDto = {
         visitId: 'VIS-CONSUME',
         visitName: 'Consume Test',
-        allowedBuilding: 'GATE-A',
+        turnstileId: 'GATE-A', // Campo correto
         windowStart: new Date(Date.now() - 1800000).toISOString(), // 30 min ago
         windowEnd: new Date(Date.now() + 3600000).toISOString(), // 1 hour from now
         maxUses: 2,
@@ -192,7 +192,7 @@ HwIDAQAB
       const createDto = {
         visitId: 'VIS-REVOKE',
         visitName: 'Revoke Test',
-        allowedBuilding: 'GATE-A',
+        turnstileId: 'GATE-A', // Campo correto
         windowStart: new Date(Date.now() + 1800000).toISOString(),
         windowEnd: new Date(Date.now() + 3600000).toISOString(),
         maxUses: 1,

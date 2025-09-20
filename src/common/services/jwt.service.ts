@@ -43,7 +43,7 @@ export class JwtService {
   }): { token: string; jti: string } {
     const nbf = Math.floor(new Date(input.windowStart).getTime() / 1000);
     const exp = Math.floor(new Date(input.windowEnd).getTime() / 1000);
-    const iat = Math.floor(Date.now() / 1000);
+    const iat = Math.floor((Date.now() - 3 * 60 * 60 * 1000) / 1000);
     const jti = randomUUID();
 
     if (!Number.isFinite(nbf) || !Number.isFinite(exp) || exp <= nbf) {

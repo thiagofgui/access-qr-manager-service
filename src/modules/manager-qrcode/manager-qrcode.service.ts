@@ -4,6 +4,7 @@ import {
   ConflictException,
   GoneException,
   BadRequestException,
+  Logger,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
@@ -19,16 +20,22 @@ import { env } from '../../config/env';
 
 @Injectable()
 export class ManagerQrcodeService {
+  private readonly logger = new Logger(ManagerQrcodeService.name);
+
   constructor(
     @InjectModel(Pass.name)
     private passModel: Model<PassDocument>,
     private jwtService: JwtService,
-  ) {}
+  ) { }
 
   async createQrcode(createQrcodeDto: CreateQrcodeDto) {
     const now = new Date(Date.now() - 3 * 60 * 60 * 1000);
     const windowStart = new Date(createQrcodeDto.windowStart);
     const windowEnd = new Date(createQrcodeDto.windowEnd);
+    
+    const windowStartBR = new Date(windowStart.getTime() - 3 * 60 * 60 * 1000);
+    const windowEndBR = new Date(windowEnd.getTime() - 3 * 60 * 60 * 1000);
+    this.logger.log(`⏰ [QR-MANAGER] Janela: ${windowStartBR.toLocaleString('pt-BR')} até ${windowEndBR.toLocaleString('pt-BR')}`);
 
     // Validações
     if (windowStart <= now) {
@@ -42,7 +49,7 @@ export class ManagerQrcodeService {
     const { token, jti } = this.jwtService.generateToken({
       visitId: createQrcodeDto.visitId,
       visitName: createQrcodeDto.visitName,
-      allowedBuilding: createQrcodeDto.allowedBuilding,
+      allowedBuilding: createQrcodeDto.turnstileId,
       windowStart: createQrcodeDto.windowStart,
       windowEnd: createQrcodeDto.windowEnd,
       maxUses: createQrcodeDto.maxUses,
@@ -53,7 +60,7 @@ export class ManagerQrcodeService {
       jti,
       visitId: createQrcodeDto.visitId,
       visitName: createQrcodeDto.visitName,
-      allowedBuilding: createQrcodeDto.allowedBuilding,
+      allowedBuilding: createQrcodeDto.turnstileId,
       windowStart,
       windowEnd,
       maxUses: createQrcodeDto.maxUses || 1,
@@ -62,6 +69,7 @@ export class ManagerQrcodeService {
     });
 
     await pass.save();
+    this.logger.log(`💾 [QR-MANAGER] QR Code salvo no banco - Máx usos: ${pass.maxUses}`);
 
     return {
       token,
@@ -71,9 +79,17 @@ export class ManagerQrcodeService {
   }
 
   async consumeQrcode(consumeQrcodeDto: ConsumeQrcodeDto) {
+    this.logger.log(`🔍 [QR-MANAGER] Validando QR Code: ${consumeQrcodeDto.jti.substring(0, 8)}...`);
+
     const pass = await this.passModel.findOne({
       jti: consumeQrcodeDto.jti,
     });
+
+    if (!pass) {
+      this.logger.error(`❌ [QR-MANAGER] QR Code não encontrado: ${consumeQrcodeDto.jti.substring(0, 8)}...`);
+    } else {
+      this.logger.log(`✅ [QR-MANAGER] QR Code encontrado - Status: ${pass.status} | Usos: ${pass.usedCount}/${pass.maxUses}`);
+    }
 
     if (!pass) {
       throw new NotFoundException('Pass not found');
@@ -84,30 +100,44 @@ export class ManagerQrcodeService {
 
     // Verificar se foi revogado
     if (pass.status === PassStatus.REVOKED) {
-      throw new GoneException('Pass revoked');
+      this.logger.error(`❌ [QR-MANAGER] QR Code foi revogado`);
+      throw new GoneException('QR Code foi revogado pelo administrador');
     }
 
     // Verificar se expirou
     if (now > pass.windowEnd) {
       pass.status = PassStatus.EXPIRED;
       await pass.save();
-      throw new BadRequestException('Pass expired');
+      this.logger.error(`❌ [QR-MANAGER] QR Code expirado`);
+      throw new BadRequestException('QR Code expirado');
     }
 
     // Verificar se já foi usado o máximo de vezes
     if (pass.usedCount >= pass.maxUses) {
-      throw new ConflictException('Pass already used maximum times');
+      this.logger.error(`❌ [QR-MANAGER] QR Code esgotou usos: ${pass.usedCount}/${pass.maxUses}`);
+      throw new ConflictException('QR Code já foi usado o máximo de vezes permitidas');
     }
 
     // Verificar se o gate é permitido
     if (pass.allowedBuilding !== consumeQrcodeDto.gate) {
-      throw new BadRequestException('Gate not allowed for this pass');
+      this.logger.error(`❌ [QR-MANAGER] Catraca não autorizada: ${consumeQrcodeDto.gate} != ${pass.allowedBuilding}`);
+      throw new BadRequestException('QR Code não autorizado para esta catraca');
     }
 
     // Verificar se ainda está na janela de tempo
+    const windowStartBR = new Date(pass.windowStart.getTime() - 3 * 60 * 60 * 1000);
+    const windowEndBR = new Date(pass.windowEnd.getTime() - 3 * 60 * 60 * 1000);
+    const scanTimeBR = new Date(scanTime.getTime() - 3 * 60 * 60 * 1000);
+    
+    this.logger.log(`⏰ [QR-MANAGER] Janela: ${windowStartBR.toLocaleString('pt-BR')} até ${windowEndBR.toLocaleString('pt-BR')}`);
+    this.logger.log(`🕐 [QR-MANAGER] Scan em: ${scanTimeBR.toLocaleString('pt-BR')}`);
+
     if (scanTime < pass.windowStart || scanTime > pass.windowEnd) {
+      this.logger.error(`❌ [QR-MANAGER] Fora da janela de tempo!`);
       throw new BadRequestException('Scan time outside allowed window');
     }
+
+    this.logger.log(`✅ [QR-MANAGER] Dentro da janela de tempo - ACESSO LIBERADO!`);
 
     // Incrementar contador de uso
     pass.usedCount += 1;
@@ -121,17 +151,38 @@ export class ManagerQrcodeService {
   }
 
   async revokeQrcode(jti: string) {
-    const pass = await this.passModel.findOne({
-      jti,
-    });
+  const pass = await this.passModel.findOne({
+    jti,
+  });
 
-    if (!pass) {
-      throw new NotFoundException('Pass not found');
-    }
+  if (!pass) {
+    throw new NotFoundException('Pass not found');
+  }
 
-    pass.status = PassStatus.REVOKED;
-    await pass.save();
+  pass.status = PassStatus.REVOKED;
+  await pass.save();
 
-    return { ok: true };
+  return { ok: true };
+}
+
+  async getQrcodesByResident(residentId: string) {
+    const now = new Date(Date.now() - 3 * 60 * 60 * 1000);
+    
+    const passes = await this.passModel.find({
+      visitId: { $regex: `^${residentId}-` },
+      status: { $in: [PassStatus.PENDING, PassStatus.ACTIVE] },
+      windowEnd: { $gt: now }
+    }).sort({ windowEnd: -1 });
+
+    return passes.map(pass => ({
+      jti: pass.jti,
+      visitName: pass.visitName,
+      windowStart: pass.windowStart,
+      windowEnd: pass.windowEnd,
+      usedCount: pass.usedCount,
+      maxUses: pass.maxUses,
+      status: pass.status,
+      allowedBuilding: pass.allowedBuilding
+    }));
   }
 }

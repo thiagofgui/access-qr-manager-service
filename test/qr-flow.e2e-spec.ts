@@ -69,12 +69,12 @@ HwIDAQAB
 
   describe('Complete QR Code Lifecycle', () => {
     it('should handle complete flow: create -> consume -> revoke', async () => {
-      // 1. Create QR Code
+      // 1. Create QR Code (usando timezone Brasil)
       const createDto = {
         visitId: 'VIS-FLOW-001',
         visitName: 'Integration Test Visit',
-        allowedBuilding: 'GATE-A',
-        windowStart: new Date(Date.now() - 1800000).toISOString(), // 30 min ago
+        turnstileId: 'GATE-A', // Campo correto
+        windowStart: new Date(Date.now() + 600000).toISOString(), // 10 min from now
         windowEnd: new Date(Date.now() + 3600000).toISOString(), // 1 hour from now
         maxUses: 2,
       };
@@ -92,7 +92,7 @@ HwIDAQAB
       const consumeDto1 = {
         jti,
         gate: 'GATE-A',
-        at: new Date().toISOString(),
+        at: new Date(Date.now() + 900000).toISOString(), // 15 min from now (dentro da janela)
       };
 
       const consumeResponse1 = await request(app.getHttpServer())
@@ -109,7 +109,7 @@ HwIDAQAB
       const consumeDto2 = {
         jti,
         gate: 'GATE-A',
-        at: new Date().toISOString(),
+        at: new Date(Date.now() + 1200000).toISOString(), // 20 min from now (dentro da janela)
       };
 
       const consumeResponse2 = await request(app.getHttpServer())
@@ -126,7 +126,7 @@ HwIDAQAB
       const consumeDto3 = {
         jti,
         gate: 'GATE-A',
-        at: new Date().toISOString(),
+        at: new Date(Date.now() + 1500000).toISOString(), // 25 min from now (dentro da janela)
       };
 
       await request(app.getHttpServer())
@@ -151,7 +151,7 @@ HwIDAQAB
       const createDto1 = {
         visitId: 'VIS-MULTI-001',
         visitName: 'Multi Test 1',
-        allowedBuilding: 'GATE-A',
+        turnstileId: 'GATE-A', // Campo correto
         windowStart: new Date(Date.now() - 1800000).toISOString(),
         windowEnd: new Date(Date.now() + 3600000).toISOString(),
         maxUses: 1,
@@ -166,7 +166,7 @@ HwIDAQAB
       const createDto2 = {
         visitId: 'VIS-MULTI-002',
         visitName: 'Multi Test 2',
-        allowedBuilding: 'GATE-B',
+        turnstileId: 'GATE-B', // Campo correto
         windowStart: new Date(Date.now() - 1800000).toISOString(),
         windowEnd: new Date(Date.now() + 3600000).toISOString(),
         maxUses: 1,
@@ -216,7 +216,7 @@ HwIDAQAB
       const createDto = {
         visitId: 'VIS-TIME-001',
         visitName: 'Time Test',
-        allowedBuilding: 'GATE-A',
+        turnstileId: 'GATE-A', // Campo correto
         windowStart: futureStart.toISOString(),
         windowEnd: futureEnd.toISOString(),
         maxUses: 1,

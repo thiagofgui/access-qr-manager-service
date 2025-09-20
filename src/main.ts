@@ -17,7 +17,7 @@ async function bootstrap() {
   // Habilitar CORS para demonstração
   app.enableCors();
 
-  const port = process.env.PORT ?? 3000;
+  const port = process.env.PORT ?? 8000;
   await app.listen(port);
 
   console.log(`🚀 Access QR Manager Service rodando na porta ${port}`);
