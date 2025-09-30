@@ -32,17 +32,13 @@ export class ManagerQrcodeService {
     const now = new Date(Date.now() - 3 * 60 * 60 * 1000);
     const windowStart = new Date(createQrcodeDto.windowStart);
     const windowEnd = new Date(createQrcodeDto.windowEnd);
-    
-    const windowStartBR = new Date(windowStart.getTime() - 3 * 60 * 60 * 1000);
-    const windowEndBR = new Date(windowEnd.getTime() - 3 * 60 * 60 * 1000);
-    this.logger.log(`⏰ [QR-MANAGER] Janela: ${windowStartBR.toLocaleString('pt-BR')} até ${windowEndBR.toLocaleString('pt-BR')}`);
 
     // Validações
     if (windowStart <= now) {
-      throw new BadRequestException('windowStart must be in the future');
+      throw new BadRequestException('A data de início deve ser no futuro');
     }
     if (windowEnd <= windowStart) {
-      throw new BadRequestException('windowEnd must be after windowStart');
+      throw new BadRequestException('A data de fim deve ser após a data de início');
     }
 
     // Gerar token JWT
@@ -92,7 +88,7 @@ export class ManagerQrcodeService {
     }
 
     if (!pass) {
-      throw new NotFoundException('Pass not found');
+      throw new NotFoundException('QR Code não encontrado');
     }
 
     const now = new Date(Date.now() - 3 * 60 * 60 * 1000);
@@ -134,7 +130,7 @@ export class ManagerQrcodeService {
 
     if (scanTime < pass.windowStart || scanTime > pass.windowEnd) {
       this.logger.error(`❌ [QR-MANAGER] Fora da janela de tempo!`);
-      throw new BadRequestException('Scan time outside allowed window');
+      throw new BadRequestException('Acesso fora do horário permitido');
     }
 
     this.logger.log(`✅ [QR-MANAGER] Dentro da janela de tempo - ACESSO LIBERADO!`);
@@ -156,7 +152,7 @@ export class ManagerQrcodeService {
   });
 
   if (!pass) {
-    throw new NotFoundException('Pass not found');
+    throw new NotFoundException('QR Code não encontrado');
   }
 
   pass.status = PassStatus.REVOKED;

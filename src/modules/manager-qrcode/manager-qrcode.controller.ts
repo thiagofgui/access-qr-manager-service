@@ -23,9 +23,13 @@ export class ManagerQrcodeController {
   @HttpCode(HttpStatus.CREATED)
   async createQrcode(@Body() createQrcodeDto: CreateQrcodeDto) {
     this.logger.log(`🆕 [QR-MANAGER] Criando QR Code para visitante`);
-    const result = await this.managerQrcodeService.createQrcode(createQrcodeDto);
-    this.logger.log(`✅ [QR-MANAGER] QR Code criado com sucesso`);
-    return result;
+    try {
+      const result = await this.managerQrcodeService.createQrcode(createQrcodeDto);
+      this.logger.log(`✅ [QR-MANAGER] QR Code criado com sucesso`);
+      return result;
+    } catch (error) {
+      throw error;
+    }
   }
 
   @Post('consume')
